@@ -19,15 +19,30 @@ def generate():
     seo = fetch_seo_data(keyword)
     content = generate_blog_post(keyword, seo)
 
-    filename = f"{POSTS_DIR}/{keyword.replace(' ', '_')}_{datetime.now().date()}.md"
-    with open(filename, 'w', encoding='utf-8') as f:
+    now = datetime.now().strftime("%Y-%m-%d_%H-%M")
+    safe_keyword = keyword.replace(' ', '_')
+
+    # Save Markdown
+    md_filename = f"{POSTS_DIR}/{safe_keyword}_{now}.md"
+    with open(md_filename, 'w', encoding='utf-8') as f:
         f.write(content)
+
+    # Save Metadata JSON
+    json_filename = f"{POSTS_DIR}/{safe_keyword}_{now}.json"
+    with open(json_filename, 'w', encoding='utf-8') as f:
+        json.dump({
+            "keyword": keyword,
+            "generated_at": now,
+            "seo": seo,
+            "content": content
+        }, f, indent=2)
 
     return jsonify({
         "keyword": keyword,
         "seo": seo,
         "blog_post": content
     })
+
 
 @app.route('/favicon.ico')
 def favicon():

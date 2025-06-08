@@ -32,6 +32,7 @@ instance/
 
 # Generated posts
 generated_posts/*.md
+generated_posts/*.json
 !generated_posts/.gitkeep  # Keep the folder in git
 
 # Coverage/test
