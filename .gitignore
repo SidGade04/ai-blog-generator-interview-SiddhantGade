@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.egg-info/
+*.egg
+*.log
+
+# Virtual environment
+.venv/
+env/
+venv/
+ENV/
+
+# Environment variables
+.env
+
+# VSCode / PyCharm settings
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Flask/Misc
+instance/
+*.db
+*.sqlite3
+
+# Generated posts
+generated_posts/*.md
+!generated_posts/.gitkeep  # Keep the folder in git
+
+# Coverage/test
+.coverage
+htmlcov/
+.pytest_cache/

@@ -1,0 +1,50 @@
+from flask import Flask, request, jsonify
+from seo_fetcher import fetch_seo_data
+from ai_generator import generate_blog_post
+from apscheduler.schedulers.background import BackgroundScheduler
+from datetime import datetime
+import os
+
+app = Flask(__name__)
+POSTS_DIR = "generated_posts"
+os.makedirs(POSTS_DIR, exist_ok=True)
+
+@app.route('/generate', methods=['GET'])
+def generate():
+    keyword = request.args.get("keyword")
+    if not keyword:
+        return jsonify({"error": "Missing keyword"}), 400
+
+    seo = fetch_seo_data(keyword)
+    content = generate_blog_post(keyword, seo)
+
+    filename = f"{POSTS_DIR}/{keyword.replace(' ', '_')}_{datetime.now().date()}.md"
+    with open(filename, 'w', encoding='utf-8') as f:
+        f.write(content)
+
+    return jsonify({
+        "keyword": keyword,
+        "seo": seo,
+        "blog_post": content
+    })
+
+@app.route('/favicon.ico')
+def favicon():
+    return '', 204
+
+def daily_job():
+    keyword = "wireless earbuds"
+    seo = fetch_seo_data(keyword)
+    content = generate_blog_post(keyword, seo)
+    filename = f"{POSTS_DIR}/{keyword.replace(' ', '_')}_{datetime.now().date()}.md"
+    with open(filename, 'w', encoding='utf-8') as f:
+        f.write(content)
+    print(f"[{datetime.now()}] Blog generated for: {keyword}")
+
+# Scheduler Setup
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=daily_job, trigger="interval", days=1)
+scheduler.start()
+
+if __name__ == "__main__":
+    app.run(debug=True)
