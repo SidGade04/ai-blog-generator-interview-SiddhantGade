@@ -141,3 +141,9 @@ If given more time, here’s what I would expand on:
 * Push to a CMS (like Ghost or Medium) via API
 * Add a web UI to view past posts
 * Implement a keyword suggestion engine
+
+---
+
+## Notes on SEO API Usage
+
+Real SEO APIs were reviewed (SerpApi, KeywordTool, DataForSEO), but due to pricing or access restrictions, the SEO data in this project is mocked for demonstration purposes. The code is designed so that a real SEO API could be plugged in later with minimal changes.
